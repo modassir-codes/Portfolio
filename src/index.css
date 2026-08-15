@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .font-serif {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Editorial Minimalist scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 120, 120, 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 120, 120, 0.6);
+}
+
+/* Editorial grid lines & borders */
+.editorial-border {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+.dark .editorial-border {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Print styles for authentic resume printing/saving to PDF */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+    font-size: 10.5pt;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .page-break {
+    page-break-before: always;
+  }
+}
+
+@media screen {
+  .print-only {
+    display: none !important;
+  }
+}
