@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, useScroll, useSpring } from 'motion/react';
 import { ThemeProvider } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -12,6 +13,12 @@ import { Footer } from './components/Footer';
 
 export default function App() {
   const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   const handleOpenResume = () => {
     setIsResumeModalOpen(true);
@@ -31,6 +38,12 @@ export default function App() {
   return (
     <ThemeProvider>
       <div className="min-h-screen bg-[#FAFAFA] text-[#111111] dark:bg-[#0F0F0F] dark:text-[#F5F5F5] selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-200 antialiased font-sans">
+        {/* Subtle Editorial Scroll Progress Indicator */}
+        <motion.div
+          style={{ scaleX }}
+          className="fixed top-0 left-0 right-0 h-[2px] bg-black dark:bg-white origin-left z-50 pointer-events-none"
+        />
+
         {/* Navigation Bar */}
         <Navbar
           onOpenResume={handleOpenResume}
