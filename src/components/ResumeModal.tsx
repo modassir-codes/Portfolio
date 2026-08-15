@@ -113,27 +113,39 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               className="max-w-3xl mx-auto bg-white text-black p-8 sm:p-12 border border-black/15 shadow-md font-serif"
             >
               {/* Header */}
-              <div className="text-center pb-4 border-b border-black/20">
-                <h1 className="text-3xl sm:text-4xl font-serif tracking-tight text-black mb-1">
-                  Modassir Raja
-                </h1>
-                <p className="text-sm font-mono uppercase tracking-widest text-neutral-600 mb-2">
-                  Frontend Developer
-                </p>
-                <div className="text-xs text-neutral-600 font-mono flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-                  <span>Hyderabad, India</span>
-                  <span>/</span>
-                  <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-black hover:underline">
-                    LinkedIn
-                  </a>
-                  <span>/</span>
-                  <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="text-black hover:underline">
-                    GitHub
-                  </a>
-                  <span>/</span>
-                  <a href={`mailto:${PERSONAL_INFO.email}`} className="text-black hover:underline">
-                    {PERSONAL_INFO.email}
-                  </a>
+              <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-4 pb-5 border-b border-black/20 text-center sm:text-left">
+                <div className="flex-1">
+                  <h1 className="text-3xl sm:text-4xl font-serif tracking-tight text-black mb-1">
+                    Modassir Raja
+                  </h1>
+                  <p className="text-sm font-mono uppercase tracking-widest text-neutral-600 mb-2">
+                    Frontend Developer
+                  </p>
+                  <div className="text-xs text-neutral-600 font-mono flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
+                    <span>Hyderabad, India</span>
+                    <span>/</span>
+                    <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-black hover:underline">
+                      LinkedIn
+                    </a>
+                    <span>/</span>
+                    <a href={PERSONAL_INFO.github} target="_blank" rel="noreferrer" className="text-black hover:underline">
+                      GitHub
+                    </a>
+                    <span>/</span>
+                    <a href={`mailto:${PERSONAL_INFO.email}`} className="text-black hover:underline">
+                      {PERSONAL_INFO.email}
+                    </a>
+                  </div>
+                </div>
+
+                {/* Passport/Profile Photo in CV */}
+                <div className="w-20 h-24 rounded-xs border border-black/25 overflow-hidden shrink-0 shadow-xs bg-neutral-100">
+                  <img
+                    src={PERSONAL_INFO.avatar}
+                    alt={PERSONAL_INFO.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
               </div>
 

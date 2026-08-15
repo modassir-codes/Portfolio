@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/resumeData';
 import { ContactFormData } from '../types';
+import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState<ContactFormData>({
@@ -79,11 +80,17 @@ export const ContactSection: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-24 border-b border-black/10 dark:border-white/10">
+    <section id="contact" className="py-24 border-b border-black/10 dark:border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          variants={staggerContainer}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12"
+        >
           {/* Left Column: Contact details & quick pitch */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
+          <motion.div variants={fadeInUp} className="lg:col-span-5 flex flex-col justify-between">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
                 SECTION // 05 — DISPATCH
@@ -166,10 +173,10 @@ export const ContactSection: React.FC = () => {
                 <span>LinkedIn</span>
               </a>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7">
+          <motion.div variants={fadeInUp} className="lg:col-span-7">
             <div className="bg-black/[0.02] dark:bg-white/[0.02] rounded-xs p-6 sm:p-10 border border-black/15 dark:border-white/15 relative overflow-hidden">
               <AnimatePresence mode="wait">
                 {isSubmitted ? (
@@ -383,8 +390,8 @@ export const ContactSection: React.FC = () => {
                 )}
               </AnimatePresence>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

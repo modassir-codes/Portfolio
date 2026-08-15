@@ -1,4 +1,5 @@
 import { Project, ExperienceItem, SkillCategory, EducationItem, CertificationItem, LanguageItem } from '../types';
+import profilePhoto from '../assets/images/modassir_portrait_1786835447448.jpg';
 
 export const PERSONAL_INFO = {
   name: 'Modassir Raja',
@@ -7,6 +8,8 @@ export const PERSONAL_INFO = {
   email: 'modassirraza722083@gmail.com',
   github: 'https://github.com/modassir-raja',
   linkedin: 'https://linkedin.com/in/modassir-raja',
+  avatar: profilePhoto,
+  avatarAlt: 'Modassir Raja - Frontend Developer Portrait Headshot',
   summary:
     'Frontend Developer with hands-on experience building responsive, accessible, and user-focused web interfaces using HTML5, CSS3, JavaScript, and React. Strong understanding of UI engineering principles, cross-browser compatibility, performance optimization, and software development life cycle (SDLC). Seeking a frontend engineering role at Google to build scalable, high-quality user experiences.',
   availability: 'Available for full-time Frontend Engineering opportunities',

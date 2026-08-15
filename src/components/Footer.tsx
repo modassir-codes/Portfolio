@@ -17,8 +17,13 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-black/10 dark:border-white/10">
           {/* Brand */}
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-xs border border-black dark:border-white flex items-center justify-center font-serif font-bold text-xs text-black dark:text-white">
-              MR
+            <div className="w-8 h-8 rounded-xs overflow-hidden border border-black/20 dark:border-white/20 bg-neutral-900 shrink-0">
+              <img
+                src={PERSONAL_INFO.avatar}
+                alt={PERSONAL_INFO.name}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover object-top"
+              />
             </div>
             <div>
               <span className="text-sm font-serif font-normal text-black dark:text-white block">

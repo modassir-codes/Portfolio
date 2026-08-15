@@ -15,6 +15,7 @@ import {
   Linkedin,
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/resumeData';
+import { staggerContainer, fadeInUp } from '../utils/animations';
 
 interface HeroProps {
   onOpenResume: () => void;
@@ -35,12 +36,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onOpenContact }) => {
           <span className="hidden sm:inline">FRONTEND ENGINEERING & ARCHITECTURE</span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start"
+        >
           {/* Left Column: Bio and CTA */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            variants={fadeInUp}
             className="lg:col-span-7 flex flex-col items-start"
           >
             {/* Main Editorial Headline */}
@@ -118,62 +122,45 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onOpenContact }) => {
             </div>
           </motion.div>
 
-          {/* Right Column: Editorial Manifest & Spec Card */}
+          {/* Right Column: Portrait Photo & Editorial Specification Card */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.15 }}
-            className="lg:col-span-5"
+            variants={fadeInUp}
+            className="lg:col-span-5 flex flex-col gap-6"
           >
-            {/* Spec Box */}
-            <div className="border border-black/15 dark:border-white/15 bg-black/[0.02] dark:bg-white/[0.02] rounded-xs font-mono text-xs overflow-hidden">
-              {/* Header */}
-              <div className="flex items-center justify-between px-5 py-3 border-b border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.03]">
+            {/* Editorial Portrait Presentation Card */}
+            <div className="border border-black/15 dark:border-white/15 bg-black/[0.02] dark:bg-white/[0.02] rounded-xs font-mono overflow-hidden shadow-sm">
+              {/* Card Masthead Bar */}
+              <div className="flex items-center justify-between px-4 py-2.5 border-b border-black/10 dark:border-white/10 bg-black/[0.03] dark:bg-white/[0.03]">
                 <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-black/40 dark:bg-white/40" />
-                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-bold text-black/80 dark:text-white/80">
-                    SPECIFICATION // PROFILE
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="font-mono text-[10px] tracking-[0.2em] uppercase font-bold text-black/90 dark:text-white/90">
+                    PORTRAIT // ARCHIVE REF. 01
                   </span>
                 </div>
-                <div className="text-[10px] tracking-widest text-neutral-500 uppercase">REV 2026.04</div>
+                <div className="text-[9px] tracking-widest text-neutral-500 uppercase font-mono">HYDERABAD, IN</div>
               </div>
 
-              {/* Specs Rows */}
-              <div className="p-6 space-y-4">
-                <div className="border-b border-black/10 dark:border-white/10 pb-3">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 block mb-1">
-                    PRIMARY STACK
-                  </span>
-                  <p className="font-serif italic text-base text-black dark:text-white">
-                    HTML5, CSS3, JavaScript (ES6+), React.js, Tailwind CSS
-                  </p>
-                </div>
+              {/* Photo Display Frame */}
+              <div className="relative group overflow-hidden bg-neutral-900 aspect-square sm:aspect-[4/3] lg:aspect-square flex items-center justify-center">
+                <img
+                  src={PERSONAL_INFO.avatar}
+                  alt={PERSONAL_INFO.avatarAlt}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+                
+                {/* Subtle vignette/border overlay */}
+                <div className="absolute inset-0 border border-black/10 dark:border-white/10 pointer-events-none" />
 
-                <div className="border-b border-black/10 dark:border-white/10 pb-3">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 block mb-1">
-                    ENGINEERING PRACTICES
+                {/* Bottom Badge inside photo */}
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between bg-black/75 dark:bg-black/85 backdrop-blur-md px-3 py-2 border border-white/15 text-white rounded-xs">
+                  <div>
+                    <span className="font-serif italic text-xs sm:text-sm block text-white">Modassir Raja</span>
+                    <span className="font-mono text-[9px] text-neutral-300 uppercase tracking-widest block">Frontend Developer // React</span>
+                  </div>
+                  <span className="text-[8px] font-mono uppercase tracking-widest px-2 py-0.5 border border-emerald-400/50 text-emerald-300 rounded-xs bg-emerald-950/40">
+                    Active
                   </span>
-                  <p className="text-xs text-neutral-700 dark:text-neutral-300">
-                    Semantic Accessibility (WCAG AA/AAA), Responsive Fluid Design, RESTful API Integration, Git Version Control
-                  </p>
-                </div>
-
-                <div className="border-b border-black/10 dark:border-white/10 pb-3">
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 block mb-1">
-                    EXPERIENCE & TRACK RECORD
-                  </span>
-                  <p className="text-xs text-neutral-700 dark:text-neutral-300">
-                    2+ Years hands-on frontend delivery, contributing to robust enterprise platforms & scalable products.
-                  </p>
-                </div>
-
-                <div>
-                  <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 block mb-1">
-                    PROFESSIONAL MOTTO
-                  </span>
-                  <p className="font-serif italic text-sm text-black/80 dark:text-white/80">
-                    "Clarity over complexity. Performance without sacrifice."
-                  </p>
                 </div>
               </div>
 
@@ -194,19 +181,35 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume, onOpenContact }) => {
               </div>
             </div>
 
+            {/* Concise Specs Breakdown */}
+            <div className="border border-black/15 dark:border-white/15 bg-black/[0.02] dark:bg-white/[0.02] rounded-xs font-mono text-xs p-5 space-y-3">
+              <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">CORE STACK</span>
+                <span className="font-serif italic text-xs sm:text-sm text-black dark:text-white">HTML5, CSS3, JS (ES6+), React</span>
+              </div>
+              <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-2">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">EXPERTISE</span>
+                <span className="text-[11px] text-neutral-700 dark:text-neutral-300">WCAG AA, Responsive, Git, SDLC</span>
+              </div>
+              <div className="flex items-center justify-between pt-0.5">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-neutral-500">MOTTO</span>
+                <span className="font-serif italic text-xs text-neutral-800 dark:text-neutral-200">"Clarity over complexity."</span>
+              </div>
+            </div>
+
             {/* Editorial Highlights */}
-            <div className="mt-4 grid grid-cols-2 gap-3 font-mono text-[10px] uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
-              <div className="flex items-center gap-2 p-3 border border-black/10 dark:border-white/10 rounded-xs">
+            <div className="grid grid-cols-2 gap-3 font-mono text-[10px] uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
+              <div className="flex items-center gap-2 p-3 border border-black/10 dark:border-white/10 rounded-xs bg-black/[0.01] dark:bg-white/[0.01]">
                 <ShieldCheck className="w-3.5 h-3.5 text-black dark:text-white shrink-0" />
                 <span>Security & QA First</span>
               </div>
-              <div className="flex items-center gap-2 p-3 border border-black/10 dark:border-white/10 rounded-xs">
+              <div className="flex items-center gap-2 p-3 border border-black/10 dark:border-white/10 rounded-xs bg-black/[0.01] dark:bg-white/[0.01]">
                 <Zap className="w-3.5 h-3.5 text-black dark:text-white shrink-0" />
                 <span>Sub-second Load Speeds</span>
               </div>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

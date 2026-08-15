@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { PROJECTS } from '../data/resumeData';
 import { Project } from '../types';
+import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const Projects: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | 'react' | 'ui' | 'fullstack'>('all');
@@ -42,57 +43,64 @@ export const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="py-24 border-b border-black/10 dark:border-white/10">
+    <section id="projects" className="py-24 border-b border-black/10 dark:border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-          <div className="max-w-2xl">
-            <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
-              SECTION // 02 — ARCHIVE
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={scrollViewport}
+          variants={staggerContainer}
+        >
+          {/* Section Header */}
+          <motion.div
+            variants={fadeInUp}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16"
+          >
+            <div className="max-w-2xl">
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
+                SECTION // 02 — ARCHIVE
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-3">
+                Selected Works & Case Studies
+              </h2>
+              <p className="text-base text-neutral-600 dark:text-neutral-400 font-serif italic">
+                Applications highlighting responsive design, accessible components, state management, and real-world UI engineering principles.
+              </p>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-3">
-              Selected Works & Case Studies
-            </h2>
-            <p className="text-base text-neutral-600 dark:text-neutral-400 font-serif italic">
-              Applications highlighting responsive design, accessible components, state management, and real-world UI engineering principles.
-            </p>
-          </div>
 
-          {/* Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xs border border-black/15 dark:border-white/15 bg-black/[0.02] dark:bg-white/[0.02]">
-            {[
-              { id: 'all', label: 'All Works' },
-              { id: 'react', label: 'React Systems' },
-              { id: 'ui', label: 'UI & Security' },
-              { id: 'fullstack', label: 'Hospital Portal' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                id={`filter-tab-${tab.id}`}
-                onClick={() => setActiveFilter(tab.id as any)}
-                className={`px-3.5 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-xs transition-all ${
-                  activeFilter === tab.id
-                    ? 'bg-black text-white dark:bg-white dark:text-black font-bold'
-                    : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
-                }`}
+            {/* Filter Tabs */}
+            <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xs border border-black/15 dark:border-white/15 bg-black/[0.02] dark:bg-white/[0.02]">
+              {[
+                { id: 'all', label: 'All Works' },
+                { id: 'react', label: 'React Systems' },
+                { id: 'ui', label: 'UI & Security' },
+                { id: 'fullstack', label: 'Hospital Portal' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  id={`filter-tab-${tab.id}`}
+                  onClick={() => setActiveFilter(tab.id as any)}
+                  className={`px-3.5 py-1.5 text-[10px] font-mono uppercase tracking-widest rounded-xs transition-all ${
+                    activeFilter === tab.id
+                      ? 'bg-black text-white dark:bg-white dark:text-black font-bold'
+                      : 'text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Projects Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredProjects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                layout
+                variants={fadeInUp}
+                className="group relative flex flex-col justify-between rounded-xs bg-black/[0.02] dark:bg-white/[0.02] border border-black/15 dark:border-white/15 p-6 sm:p-8 hover:border-black/50 dark:hover:border-white/50 transition-all duration-200"
               >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredProjects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              layout
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3, delay: index * 0.06 }}
-              className="group relative flex flex-col justify-between rounded-xs bg-black/[0.02] dark:bg-white/[0.02] border border-black/15 dark:border-white/15 p-6 sm:p-8 hover:border-black/50 dark:hover:border-white/50 transition-all duration-200"
-            >
               <div>
                 {/* Top Row: Icon + Index + Details action */}
                 <div className="flex items-center justify-between gap-3 mb-6 pb-4 border-b border-black/10 dark:border-white/10">
@@ -188,6 +196,7 @@ export const Projects: React.FC = () => {
             </motion.div>
           ))}
         </div>
+        </motion.div>
       </div>
 
       {/* Case Study Modal */}
