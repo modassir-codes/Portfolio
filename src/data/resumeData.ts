@@ -1,5 +1,5 @@
 import { Project, ExperienceItem, SkillCategory, EducationItem, CertificationItem, LanguageItem } from '../types';
-import profilePhoto from '../assets/images/modassir_portrait_1786835447448.jpg';
+import profilePhoto from '../assets/modassir_portrait_1786835447448.png';
 
 export const PERSONAL_INFO = {
   name: 'Modassir Raja',
