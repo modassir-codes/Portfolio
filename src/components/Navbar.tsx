@@ -111,12 +111,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
             <button
               id="theme-toggle-btn"
               onClick={toggleTheme}
-              className="flex items-center space-x-2 bg-black/5 dark:bg-white/5 rounded-full px-3 py-1.5 border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 transition text-[10px] uppercase tracking-wider text-black/80 dark:text-white/80"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-              title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              className="flex items-center gap-2 bg-black/[0.04] dark:bg-white/[0.06] rounded-full px-3 py-1.5 border border-black/15 dark:border-white/15 hover:border-black/40 dark:hover:border-white/40 transition cursor-pointer text-[10px] uppercase tracking-wider text-black dark:text-white"
+              aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
-              <div className="w-2.5 h-2.5 rounded-full bg-black dark:bg-white transition-colors" />
-              <span className="font-mono text-[9px] tracking-widest">{theme === 'dark' ? 'DARK' : 'LIGHT'}</span>
+              {theme === 'dark' ? (
+                <Sun className="w-3.5 h-3.5 text-amber-300" />
+              ) : (
+                <Moon className="w-3.5 h-3.5 text-neutral-800" />
+              )}
+              <span className="font-mono text-[9px] font-bold tracking-widest">
+                {theme === 'dark' ? 'LIGHT' : 'DARK'}
+              </span>
             </button>
 
             {/* Resume Button */}
