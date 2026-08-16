@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, useScroll, useSpring } from 'motion/react';
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { Experience } from './components/Experience';
@@ -37,52 +38,60 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-[#FAFAFA] text-[#111111] dark:bg-[#0F0F0F] dark:text-[#F5F5F5] selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black transition-colors duration-200 antialiased font-sans">
-        {/* Subtle Editorial Scroll Progress Indicator */}
-        <motion.div
-          style={{ scaleX }}
-          className="fixed top-0 left-0 right-0 h-[2px] bg-black dark:bg-white origin-left z-50 pointer-events-none"
-        />
+      <LanguageProvider>
+        <div
+          className="min-h-screen transition-colors duration-200 antialiased font-sans"
+          style={{
+            backgroundColor: 'var(--bg-main)',
+            color: 'var(--color-text)',
+          }}
+        >
+          {/* Subtle Editorial Scroll Progress Indicator */}
+          <motion.div
+            style={{ scaleX, backgroundColor: 'var(--color-accent)' }}
+            className="fixed top-0 left-0 right-0 h-[2px] origin-left z-50 pointer-events-none"
+          />
 
-        {/* Navigation Bar */}
-        <Navbar
-          onOpenResume={handleOpenResume}
-          onOpenContact={handleOpenContact}
-        />
-
-        {/* Main Content Sections */}
-        <main>
-          {/* Hero / About */}
-          <Hero
+          {/* Navigation Bar */}
+          <Navbar
             onOpenResume={handleOpenResume}
             onOpenContact={handleOpenContact}
           />
 
-          {/* Key Experience */}
-          <Experience />
+          {/* Main Content Sections */}
+          <main>
+            {/* Hero / About */}
+            <Hero
+              onOpenResume={handleOpenResume}
+              onOpenContact={handleOpenContact}
+            />
 
-          {/* Featured Projects */}
-          <Projects />
+            {/* Key Experience */}
+            <Experience />
 
-          {/* Technical Skills */}
-          <Skills />
+            {/* Featured Projects */}
+            <Projects />
 
-          {/* Education & Certifications */}
-          <EducationCertifications />
+            {/* Technical Skills */}
+            <Skills />
 
-          {/* Contact Form & Direct Inquiries */}
-          <ContactSection />
-        </main>
+            {/* Education & Certifications */}
+            <EducationCertifications />
 
-        {/* Footer */}
-        <Footer onOpenResume={handleOpenResume} />
+            {/* Contact Form & Direct Inquiries */}
+            <ContactSection />
+          </main>
 
-        {/* Interactive Resume View & PDF Download Modal */}
-        <ResumeModal
-          isOpen={isResumeModalOpen}
-          onClose={handleCloseResume}
-        />
-      </div>
+          {/* Footer */}
+          <Footer onOpenResume={handleOpenResume} />
+
+          {/* Interactive Resume View & PDF Download Modal */}
+          <ResumeModal
+            isOpen={isResumeModalOpen}
+            onClose={handleCloseResume}
+          />
+        </div>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

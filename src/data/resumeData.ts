@@ -3,18 +3,18 @@ import profilePhoto from '../assets/modassir_portrait_1786835447448.png';
 
 export const PERSONAL_INFO = {
   name: 'Modassir Raja',
-  title: 'Frontend Developer',
+  title: 'Full Stack Web Developer',
   location: 'Hyderabad, India',
   email: 'modassirraza722083@gmail.com',
   github: 'https://github.com/modassir-raja',
   linkedin: 'https://linkedin.com/in/modassir-raja',
   avatar: profilePhoto,
-  avatarAlt: 'Modassir Raja - Frontend Developer Portrait Headshot',
+  avatarAlt: 'Modassir Raja - Full Stack Web Developer Portrait Headshot',
   summary:
-    'Frontend Developer with hands-on experience building responsive, accessible, and user-focused web interfaces using HTML5, CSS3, JavaScript, and React. Strong understanding of UI engineering principles, cross-browser compatibility, performance optimization, and software development life cycle (SDLC). Seeking a frontend engineering role at Google to build scalable, high-quality user experiences.',
-  availability: 'Available for full-time Frontend Engineering opportunities',
+    'Full Stack Web Developer with hands-on experience building responsive, accessible, and user-focused web applications from frontend interfaces to backend integration using React, JavaScript, HTML5/CSS3, and modern web architectures. Strong understanding of UI engineering principles, full stack SDLC, cross-browser compatibility, and secure application development. Seeking a full stack engineering role at Google to build scalable, high-impact web products.',
+  availability: 'Available for full-time Full Stack Web Engineering opportunities',
   yearsOfExperience: '2+ Years Training & Experience',
-  targetRole: 'Frontend Developer / UI Engineer',
+  targetRole: 'Full Stack Web Developer / Software Engineer',
 };
 
 export const EXPERIENCES: ExperienceItem[] = [
@@ -123,6 +123,7 @@ export const PROJECTS: Project[] = [
       'Standardized design system tokens for consistent medical UI branding',
     ],
     metrics: 'Reduced task completion time by 28% and eliminated UI layout breakages on mobile tablets.',
+    readingTime: '5 min read',
     iconName: 'Activity',
     featured: true,
     githubUrl: 'https://github.com/modassir-raja/hospital-management-ui',
@@ -143,6 +144,7 @@ export const PROJECTS: Project[] = [
       'WCAG 2.1 AA accessible contrast ratios and keyboard navigation support',
     ],
     metrics: '100% Lighthouse Accessibility & SEO score with sub-second First Contentful Paint.',
+    readingTime: '4 min read',
     iconName: 'ShieldCheck',
     featured: true,
     githubUrl: 'https://github.com/modassir-raja/cba-brand-security-ui',
@@ -163,6 +165,7 @@ export const PROJECTS: Project[] = [
       'Zero-dependency standalone accessible modal and toast notification engine',
     ],
     metrics: 'Zero runtime accessibility violations across automated axe-core audits.',
+    readingTime: '4 min read',
     iconName: 'Layers',
     featured: true,
     githubUrl: 'https://github.com/modassir-raja/aura-ui-components',
@@ -183,6 +186,7 @@ export const PROJECTS: Project[] = [
       'Local persistence with offline-ready browser storage support',
     ],
     metrics: 'Instantaneous UI response times with optimized React rendering pipelines.',
+    readingTime: '3 min read',
     iconName: 'Kanban',
     featured: false,
     githubUrl: 'https://github.com/modassir-raja/devpulse-tracker',

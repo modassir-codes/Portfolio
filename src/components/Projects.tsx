@@ -1,50 +1,118 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import {
-  Code,
   ExternalLink,
   Github,
-  Layers,
   Activity,
   ShieldCheck,
+  Layers,
   Kanban,
-  CheckCircle2,
-  Sparkles,
   ArrowUpRight,
   X,
-  Zap,
+  Plus,
+  Clock,
 } from 'lucide-react';
 import { PROJECTS } from '../data/resumeData';
 import { Project } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const Projects: React.FC = () => {
+  const { t } = useLanguage();
   const [activeFilter, setActiveFilter] = useState<'all' | 'react' | 'ui' | 'fullstack'>('all');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+
+  const projectsRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: projectsRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // Parallax transforms for background depth
+  const yProjectsWatermark = useTransform(scrollYProgress, [0, 1], [-80, 80]);
+  const yProjectsGrid = useTransform(scrollYProgress, [0, 1], [-50, 50]);
+  const yMarkerTop = useTransform(scrollYProgress, [0, 1], [60, -60]);
+  const yMarkerBottom = useTransform(scrollYProgress, [0, 1], [-40, 40]);
+  const watermarkOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.015, 0.035, 0.015]);
 
   const filteredProjects = PROJECTS.filter((proj) => {
     if (activeFilter === 'all') return true;
     return proj.category === activeFilter;
   });
 
-  const getProjectIcon = (name: string) => {
-    switch (name) {
+  const getProjectIcon = (iconName: string) => {
+    switch (iconName) {
       case 'Activity':
-        return <Activity className="w-4 h-4" />;
+        return <Activity className="w-5 h-5" />;
       case 'ShieldCheck':
-        return <ShieldCheck className="w-4 h-4" />;
+        return <ShieldCheck className="w-5 h-5" />;
       case 'Layers':
-        return <Layers className="w-4 h-4" />;
+        return <Layers className="w-5 h-5" />;
       case 'Kanban':
-        return <Kanban className="w-4 h-4" />;
+        return <Kanban className="w-5 h-5" />;
       default:
-        return <Code className="w-4 h-4" />;
+        return <Layers className="w-5 h-5" />;
     }
   };
 
+  const filterOptions = [
+    { id: 'all', label: t.projects.filterAll },
+    { id: 'react', label: t.projects.filterReact },
+    { id: 'ui', label: t.projects.filterUi },
+    { id: 'fullstack', label: t.projects.filterFullstack },
+  ];
+
   return (
-    <section id="projects" className="py-24 border-b border-black/10 dark:border-white/10 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      ref={projectsRef}
+      id="projects"
+      className="relative py-24 border-b border-black/10 dark:border-white/10 overflow-hidden"
+    >
+      {/* Parallax Background Layer 1: Oversized Numeral & Archive Watermark */}
+      <motion.div
+        style={{ y: yProjectsWatermark, opacity: watermarkOpacity }}
+        className="absolute top-1/4 right-0 select-none pointer-events-none whitespace-nowrap text-[22vw] font-serif font-bold text-black dark:text-white leading-none z-0 tracking-tighter"
+        aria-hidden="true"
+      >
+        ARCHIVE
+      </motion.div>
+
+      {/* Parallax Background Layer 2: Subtle Technical Guide Marks */}
+      <motion.div
+        style={{ y: yProjectsGrid }}
+        className="absolute inset-0 pointer-events-none z-0"
+        aria-hidden="true"
+      >
+        <div className="max-w-7xl mx-auto h-full relative px-4 sm:px-6 lg:px-8">
+          <div className="absolute top-1/3 left-6 font-mono text-[9px] text-neutral-400/40 dark:text-neutral-600/50 uppercase tracking-[0.25em]">
+            + [PRJ // ARCHIVE.DIR]
+          </div>
+          <div className="absolute bottom-1/4 right-10 font-mono text-[9px] text-neutral-400/40 dark:text-neutral-600/50 uppercase tracking-[0.25em]">
+            + [SEC_02 // DEPLOYED]
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Parallax Background Layer 3: Floating Crosshairs */}
+      <motion.div
+        style={{ y: yMarkerTop }}
+        className="absolute top-1/2 left-2 md:left-8 pointer-events-none z-0 hidden sm:flex flex-col items-center gap-1 font-mono text-[8px] tracking-widest text-neutral-400/40"
+        aria-hidden="true"
+      >
+        <Plus className="w-4 h-4 opacity-30" />
+        <span>SEC_02</span>
+      </motion.div>
+
+      <motion.div
+        style={{ y: yMarkerBottom }}
+        className="absolute bottom-1/3 right-2 md:right-8 pointer-events-none z-0 hidden sm:flex flex-col items-center gap-1 font-mono text-[8px] tracking-widest text-neutral-400/40"
+        aria-hidden="true"
+      >
+        <span>INDEX.04</span>
+        <Plus className="w-4 h-4 opacity-30" />
+      </motion.div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -58,24 +126,19 @@ export const Projects: React.FC = () => {
           >
             <div className="max-w-2xl">
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
-                SECTION // 02 — ARCHIVE
+                {t.projects.sectionNum}
               </div>
               <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-3">
-                Selected Works & Case Studies
+                {t.projects.title}
               </h2>
               <p className="text-base text-neutral-600 dark:text-neutral-400 font-serif italic">
-                Applications highlighting responsive design, accessible components, state management, and real-world UI engineering principles.
+                {t.projects.subtitle}
               </p>
             </div>
 
             {/* Filter Tabs */}
             <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xs border border-black/15 dark:border-white/15 bg-black/[0.02] dark:bg-white/[0.02]">
-              {[
-                { id: 'all', label: 'All Works' },
-                { id: 'react', label: 'React Systems' },
-                { id: 'ui', label: 'UI & Security' },
-                { id: 'fullstack', label: 'Hospital Portal' },
-              ].map((tab) => (
+              {filterOptions.map((tab) => (
                 <button
                   key={tab.id}
                   id={`filter-tab-${tab.id}`}
@@ -97,86 +160,71 @@ export const Projects: React.FC = () => {
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                layout
                 variants={fadeInUp}
-                className="group relative flex flex-col justify-between rounded-xs bg-black/[0.02] dark:bg-white/[0.02] border border-black/15 dark:border-white/15 p-6 sm:p-8 hover:border-black/50 dark:hover:border-white/50 transition-all duration-200"
+                className="group relative bg-black/[0.02] dark:bg-white/[0.02] border border-black/15 dark:border-white/15 rounded-xs p-6 sm:p-8 flex flex-col justify-between hover:border-black/50 dark:hover:border-white/50 transition-all shadow-xs"
               >
-              <div>
-                {/* Top Row: Icon + Index + Details action */}
-                <div className="flex items-center justify-between gap-3 mb-6 pb-4 border-b border-black/10 dark:border-white/10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xs border border-black/15 dark:border-white/15 flex items-center justify-center text-black dark:text-white">
-                      {getProjectIcon(project.iconName)}
-                    </div>
-                    <span className="font-mono text-xs text-neutral-400">
-                      NO. 0{index + 1}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {project.featured && (
-                      <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest border border-black/20 dark:border-white/20 text-black dark:text-white">
-                        FEATURED
+                <div>
+                  {/* Top Bar: Icon + Index + Reading Time + Category */}
+                  <div className="flex items-center justify-between pb-4 mb-5 border-b border-black/10 dark:border-white/10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-xs border border-black/20 dark:border-white/20 flex items-center justify-center text-black dark:text-white group-hover:scale-105 transition">
+                        {getProjectIcon(project.iconName)}
+                      </div>
+                      <span className="font-mono text-[10px] text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">
+                        // 0{index + 1}
                       </span>
-                    )}
-                    <button
-                      id={`project-details-btn-${project.id}`}
-                      onClick={() => setSelectedProject(project)}
-                      className="p-1 text-neutral-400 hover:text-black dark:hover:text-white transition"
-                      title="View Architecture Details"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Project Title */}
-                <h3 className="text-xl sm:text-2xl font-serif text-black dark:text-white mb-2.5 group-hover:underline underline-offset-4">
-                  {project.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
-                  {project.description}
-                </p>
-
-                {/* Key Features preview */}
-                <div className="space-y-2 mb-6">
-                  {project.features.slice(0, 2).map((feat, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs text-neutral-600 dark:text-neutral-400">
-                      <span className="font-mono text-xs text-neutral-400">—</span>
-                      <span>{feat}</span>
                     </div>
-                  ))}
-                </div>
 
-                {/* Impact Metric if present */}
-                {project.metrics && (
-                  <div className="p-3 bg-black/[0.04] dark:bg-white/[0.04] border-l-2 border-black dark:border-white mb-6 text-xs text-black dark:text-white font-mono flex items-center gap-2">
-                    <Zap className="w-3.5 h-3.5 shrink-0" />
-                    <span>{project.metrics}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-mono text-neutral-600 dark:text-neutral-400 bg-black/[0.03] dark:bg-white/[0.03] px-2 py-0.5 rounded-xs border border-black/10 dark:border-white/10">
+                        <Clock className="w-3 h-3 text-neutral-400" />
+                        <span>{project.readingTime || '4 min read'}</span>
+                      </span>
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 border border-black/20 dark:border-white/20 rounded-xs text-neutral-600 dark:text-neutral-400">
+                        {project.category}
+                      </span>
+                    </div>
                   </div>
-                )}
-              </div>
 
-              {/* Bottom Row: Tech Tags & Interactive buttons */}
-              <div>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-0.5 text-[10px] font-mono uppercase rounded-xs bg-black/5 dark:bg-white/5 text-neutral-700 dark:text-neutral-300 border border-black/10 dark:border-white/10"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  {/* Title & Description */}
+                  <h3 className="text-xl sm:text-2xl font-serif text-black dark:text-white mb-3 group-hover:underline underline-offset-4 decoration-1">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6 leading-relaxed">
+                    {project.description}
+                  </p>
+
+                  {/* Key Features preview */}
+                  <div className="space-y-2 mb-6 font-mono text-xs">
+                    {project.features.slice(0, 2).map((feat, i) => (
+                      <div key={i} className="flex items-start gap-2 text-neutral-700 dark:text-neutral-300">
+                        <span className="text-neutral-400">›</span>
+                        <span className="line-clamp-1">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1.5 mb-8">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 text-[10px] font-mono uppercase rounded-xs bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-neutral-700 dark:text-neutral-300"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-black/10 dark:border-white/10">
+                {/* Bottom Actions */}
+                <div className="pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
                   <button
                     onClick={() => setSelectedProject(project)}
-                    className="text-[11px] font-mono uppercase tracking-widest font-bold text-black dark:text-white hover:opacity-75 flex items-center gap-1.5"
+                    className="inline-flex items-center gap-1.5 text-xs font-mono uppercase font-bold tracking-wider text-black dark:text-white hover:opacity-80 transition"
                   >
-                    <span>Read Dossier</span>
+                    <span>{t.projects.caseStudy}</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
 
@@ -192,10 +240,9 @@ export const Projects: React.FC = () => {
                     </a>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
 
@@ -216,6 +263,9 @@ export const Projects: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.97, y: 10 }}
               className="relative w-full max-w-2xl bg-[#FAFAFA] dark:bg-[#0F0F0F] rounded-xs border border-black/20 dark:border-white/20 shadow-2xl p-6 sm:p-8 z-10 max-h-[90vh] overflow-y-auto"
+              style={{
+                backgroundColor: 'var(--bg-card)',
+              }}
             >
               <div className="flex items-start justify-between gap-4 pb-4 border-b border-black/10 dark:border-white/10">
                 <div className="flex items-center gap-3">
@@ -226,14 +276,21 @@ export const Projects: React.FC = () => {
                     <h3 className="text-xl sm:text-2xl font-serif text-black dark:text-white">
                       {selectedProject.title}
                     </h3>
-                    <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">
-                      CASE // {selectedProject.category.toUpperCase()}
-                    </p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">
+                        CASE // {selectedProject.category.toUpperCase()}
+                      </p>
+                      <span className="text-neutral-400 font-mono text-[10px]">•</span>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-mono text-neutral-500">
+                        <Clock className="w-3 h-3 text-neutral-400" />
+                        <span>{selectedProject.readingTime || '4 min read'}</span>
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="p-1.5 text-neutral-400 hover:text-black dark:hover:text-white"
+                  className="p-1.5 text-neutral-400 hover:text-black dark:hover:text-white cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -251,7 +308,7 @@ export const Projects: React.FC = () => {
 
                 <div>
                   <h4 className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">
-                    Key Features & Technical Highlights
+                    {t.projects.keyFeatures}
                   </h4>
                   <div className="space-y-2">
                     {selectedProject.features.map((feat, i) => (
@@ -266,7 +323,7 @@ export const Projects: React.FC = () => {
                 {selectedProject.metrics && (
                   <div className="p-4 bg-black/[0.03] dark:bg-white/[0.03] border-l-2 border-black dark:border-white">
                     <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 block mb-1">
-                      Measured Impact:
+                      {t.projects.impactMetric}:
                     </span>
                     <span className="text-sm font-mono text-black dark:text-white">
                       {selectedProject.metrics}
@@ -299,13 +356,13 @@ export const Projects: React.FC = () => {
                   className="inline-flex items-center gap-2 px-4 py-2.5 text-[10px] font-mono uppercase font-bold tracking-wider rounded-xs text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition"
                 >
                   <Github className="w-3.5 h-3.5" />
-                  GitHub Source
+                  {t.projects.viewCode}
                 </a>
                 <button
                   onClick={() => setSelectedProject(null)}
                   className="px-5 py-2.5 text-[10px] font-mono uppercase font-bold tracking-wider rounded-xs text-white bg-black dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 transition"
                 >
-                  Close
+                  {t.projects.closeModal}
                 </button>
               </div>
             </motion.div>

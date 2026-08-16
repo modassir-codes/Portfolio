@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sun, Moon, FileDown, Menu, X, Terminal, Code2, Sparkles, Send } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
+import { ThemeSelector } from './ThemeSelector';
+import { LanguageSelector } from './LanguageSelector';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
 import { PERSONAL_INFO } from '../data/resumeData';
 
 interface NavbarProps {
@@ -10,7 +13,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) => {
-  const { theme, toggleTheme } = useTheme();
+  const { currentThemeConfig } = useTheme();
+  const { t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -40,45 +44,50 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
   }, []);
 
   const navLinks = [
-    { name: 'About', href: '#home', id: 'home' },
-    { name: 'Experience', href: '#experience', id: 'experience' },
-    { name: 'Projects', href: '#projects', id: 'projects' },
-    { name: 'Skills', href: '#skills', id: 'skills' },
-    { name: 'Education', href: '#education', id: 'education' },
-    { name: 'Contact', href: '#contact', id: 'contact' },
+    { name: t.nav.home, href: '#home', id: 'home' },
+    { name: t.nav.experience, href: '#experience', id: 'experience' },
+    { name: t.nav.projects, href: '#projects', id: 'projects' },
+    { name: t.nav.skills, href: '#skills', id: 'skills' },
+    { name: t.nav.education, href: '#education', id: 'education' },
+    { name: t.nav.contact, href: '#contact', id: 'contact' },
   ];
 
   return (
     <header
       id="main-navbar"
+      style={{
+        backgroundColor: isScrolled ? 'var(--bg-main)' : 'transparent',
+      }}
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#FAFAFA]/95 dark:bg-[#0F0F0F]/95 backdrop-blur-md border-b border-black/10 dark:border-white/10'
-          : 'bg-transparent border-b border-black/5 dark:border-white/5 py-1'
+          ? 'backdrop-blur-md border-b border-black/10 dark:border-white/10 opacity-95'
+          : 'border-b border-black/5 dark:border-white/5 py-1'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo / Name with Editorial Monogram & Photo */}
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          {/* Brand Signature */}
           <a
             href="#home"
-            id="nav-logo"
-            className="flex items-center gap-3 group cursor-pointer"
+            className="flex items-center gap-3 group focus:outline-hidden"
+            aria-label="Modassir Raja - Portfolio Home"
           >
-            <div className="relative w-8 h-8 rounded-xs overflow-hidden border border-black/20 dark:border-white/20 bg-neutral-900 shrink-0">
+            {/* Small Monogram / Avatar Avatar */}
+            <div className="w-8 h-8 rounded-xs overflow-hidden border border-black/20 dark:border-white/20 relative group-hover:border-black dark:group-hover:border-white transition">
               <img
                 src={PERSONAL_INFO.avatar}
                 alt={PERSONAL_INFO.name}
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
+                className="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 transition duration-300"
               />
             </div>
+
             <div className="flex flex-col">
-              <span className="text-base sm:text-lg tracking-tight font-serif italic text-black dark:text-white leading-tight">
-                Modassir Raja
+              <span className="font-serif font-bold text-base sm:text-lg tracking-tight text-black dark:text-white leading-tight">
+                {PERSONAL_INFO.name}
               </span>
-              <span className="text-[9px] uppercase tracking-[0.25em] font-mono text-black/50 dark:text-white/50">
-                Frontend Developer
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-500 leading-none">
+                {t.hero.tagline}
               </span>
             </div>
           </a>
@@ -111,59 +120,37 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
             })}
           </nav>
 
-          {/* Right actions: Dark Mode toggle + Resume Button + Contact CTA */}
-          <div className="hidden sm:flex items-center gap-4">
-            {/* Editorial Capsule Dark Mode Toggle */}
-            <button
-              id="theme-toggle-btn"
-              onClick={toggleTheme}
-              className="flex items-center gap-2 bg-black/[0.04] dark:bg-white/[0.06] rounded-full px-3 py-1.5 border border-black/15 dark:border-white/15 hover:border-black/40 dark:hover:border-white/40 transition cursor-pointer text-[10px] uppercase tracking-wider text-black dark:text-white"
-              aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-3.5 h-3.5 text-amber-300" />
-              ) : (
-                <Moon className="w-3.5 h-3.5 text-neutral-800" />
-              )}
-              <span className="font-mono text-[9px] font-bold tracking-widest">
-                {theme === 'dark' ? 'LIGHT' : 'DARK'}
-              </span>
-            </button>
+          {/* Right actions: Language Switcher + Theme Palette Switcher + Resume Button + Contact CTA */}
+          <div className="hidden sm:flex items-center gap-3">
+            {/* Language Switcher */}
+            <LanguageSelector variant="navbar" />
+
+            {/* Curated Theme Selector Dropdown */}
+            <ThemeSelector variant="navbar" />
 
             {/* Resume Button */}
             <button
               id="nav-resume-btn"
               onClick={onOpenResume}
-              className="bg-black text-white dark:bg-white dark:text-black px-4 py-2 text-[10px] uppercase font-bold tracking-[0.2em] rounded-xs hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-xs"
+              className="bg-black text-white dark:bg-white dark:text-black px-3.5 py-2 text-[10px] uppercase font-bold tracking-[0.2em] rounded-xs hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors shadow-xs"
             >
-              Download PDF
+              {t.nav.resume}
             </button>
 
             {/* Get in touch CTA */}
             <button
               id="nav-contact-cta"
               onClick={onOpenContact}
-              className="border border-black/20 dark:border-white/20 text-black dark:text-white px-3.5 py-2 text-[10px] uppercase font-bold tracking-[0.2em] rounded-xs hover:border-black dark:hover:border-white transition-colors"
+              className="border border-black/20 dark:border-white/20 text-black dark:text-white px-3 py-2 text-[10px] uppercase font-bold tracking-[0.2em] rounded-xs hover:border-black dark:hover:border-white transition-colors"
             >
-              Contact
+              {t.nav.contact}
             </button>
           </div>
 
-          {/* Mobile hamburger button */}
+          {/* Mobile actions & hamburger button */}
           <div className="flex items-center gap-2 md:hidden">
-            <button
-              id="mobile-theme-toggle"
-              onClick={toggleTheme}
-              className="p-2 rounded-xs text-black dark:text-white border border-black/10 dark:border-white/10"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-amber-400" />
-              ) : (
-                <Moon className="w-4 h-4 text-slate-900" />
-              )}
-            </button>
+            <LanguageSelector variant="navbar" />
+            <ThemeSelector variant="navbar" />
 
             <button
               id="mobile-menu-btn"
@@ -185,6 +172,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden border-b border-black/10 dark:border-white/10 bg-[#FAFAFA]/95 dark:bg-[#0F0F0F]/95 backdrop-blur-xl px-6 pt-3 pb-8 space-y-4 shadow-xl"
+            style={{
+              backgroundColor: 'var(--bg-main)',
+            }}
           >
             <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
@@ -203,6 +193,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
               ))}
             </div>
 
+            {/* In-drawer language selector */}
+            <LanguageSelector variant="mobile" />
+
+            {/* In-drawer multi-theme selector */}
+            <ThemeSelector variant="mobile" />
+
             <div className="pt-2 flex flex-col gap-2">
               <button
                 onClick={() => {
@@ -211,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
                 }}
                 className="w-full py-3 bg-black text-white dark:bg-white dark:text-black text-[10px] font-bold tracking-[0.2em] uppercase rounded-xs"
               >
-                Download PDF Resume
+                {t.nav.resume}
               </button>
 
               <button
@@ -221,7 +217,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenResume, onOpenContact }) =
                 }}
                 className="w-full py-2.5 border border-black/20 dark:border-white/20 text-black dark:text-white text-[10px] font-bold tracking-[0.2em] uppercase rounded-xs"
               >
-                Get in Touch
+                {t.nav.getInTouch}
               </button>
             </div>
           </motion.div>

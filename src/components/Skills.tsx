@@ -6,16 +6,15 @@ import {
   Wrench,
   Terminal,
   Search,
-  CheckCircle2,
   Cpu,
-  Layers,
-  Sparkles,
   Star,
 } from 'lucide-react';
 import { SKILL_CATEGORIES } from '../data/resumeData';
+import { useLanguage } from '../context/LanguageContext';
 import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const Skills: React.FC = () => {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
 
   const getCategoryIcon = (iconName: string) => {
@@ -49,13 +48,13 @@ export const Skills: React.FC = () => {
           >
             <div className="max-w-2xl">
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
-                SECTION // 03 — CAPABILITIES
+                {t.skills.sectionNum}
               </div>
               <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-3">
-                Technical Competencies & Toolkit
+                {t.skills.title}
               </h2>
               <p className="text-base text-neutral-600 dark:text-neutral-400 font-serif italic">
-                Categorized technical skills directly aligned with modern frontend standards, accessibility best practices, and team workflows.
+                {t.skills.subtitle}
               </p>
             </div>
 
@@ -67,7 +66,7 @@ export const Skills: React.FC = () => {
                 id="skill-search-input"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search competencies (e.g. React)..."
+                placeholder="Filter competencies..."
                 className="w-full pl-9 pr-4 py-2.5 text-[11px] font-mono rounded-xs bg-black/[0.02] dark:bg-white/[0.02] border border-black/15 dark:border-white/15 text-black dark:text-white placeholder-neutral-400 focus:outline-none focus:border-black dark:focus:border-white"
               />
             </div>
@@ -155,19 +154,19 @@ export const Skills: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-base font-serif text-black dark:text-white">
-                  Frontend Engineering Focus
+                  Full Stack Web Engineering Core
                 </h4>
                 <p className="text-xs text-neutral-500 font-serif italic">
-                  Specialized in cross-browser compatibility, WCAG compliance, semantic architecture, and responsive UX.
+                  Specialized in full-stack architecture, React ecosystems, cross-browser resilience, and responsive UX.
                 </p>
               </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {['HTML5 / CSS3', 'JavaScript (ES6+)', 'React.js', 'Responsive UI'].map((tag, i) => (
+              {['React.js', 'JavaScript (ES6+)', 'Node.js / REST APIs', 'HTML5 / CSS3', 'Tailwind CSS'].map((tag, i) => (
                 <span
                   key={tag}
                   className={`px-3 py-1 text-[10px] font-mono uppercase tracking-wider rounded-xs border ${
-                    i === 2
+                    i === 0
                       ? 'bg-black text-white dark:bg-white dark:text-black font-bold border-black dark:border-white'
                       : 'bg-black/5 dark:bg-white/5 border-black/10 dark:border-white/10 text-black dark:text-white'
                   }`}

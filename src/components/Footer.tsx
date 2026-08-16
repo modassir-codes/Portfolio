@@ -1,12 +1,15 @@
 import React from 'react';
-import { ArrowUp, Github, Linkedin, Mail, Heart, FileDown } from 'lucide-react';
+import { ArrowUp, Github, Linkedin, Mail, FileDown } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/resumeData';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FooterProps {
   onOpenResume: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
+  const { t } = useLanguage();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -30,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
                 Modassir Raja
               </span>
               <span className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">
-                Frontend Developer // Hyderabad
+                {t.hero.tagline} // {PERSONAL_INFO.location}
               </span>
             </div>
           </div>
@@ -38,26 +41,26 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
           {/* Nav links */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] font-mono uppercase tracking-widest text-neutral-600 dark:text-neutral-400">
             <a href="#home" className="hover:text-black dark:hover:text-white transition">
-              About
+              {t.nav.home}
             </a>
             <a href="#experience" className="hover:text-black dark:hover:text-white transition">
-              Experience
+              {t.nav.experience}
             </a>
             <a href="#projects" className="hover:text-black dark:hover:text-white transition">
-              Archive
+              {t.nav.projects}
             </a>
             <a href="#skills" className="hover:text-black dark:hover:text-white transition">
-              Capabilities
+              {t.nav.skills}
             </a>
             <a href="#education" className="hover:text-black dark:hover:text-white transition">
-              Pedagogy
+              {t.nav.education}
             </a>
             <button
               onClick={onOpenResume}
-              className="text-black dark:text-white hover:opacity-75 inline-flex items-center gap-1 font-bold border-b border-black dark:border-white"
+              className="text-black dark:text-white hover:opacity-75 inline-flex items-center gap-1 font-bold border-b border-black dark:border-white cursor-pointer"
             >
               <FileDown className="w-3 h-3" />
-              Curriculum Vitae
+              {t.nav.resume}
             </button>
           </div>
 
@@ -92,7 +95,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
             <button
               id="footer-back-to-top-btn"
               onClick={scrollToTop}
-              className="w-8 h-8 rounded-xs border border-black dark:border-white flex items-center justify-center text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition ml-2"
+              className="w-8 h-8 rounded-xs border border-black dark:border-white flex items-center justify-center text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition ml-2 cursor-pointer"
               aria-label="Scroll back to top"
               title="Back to Top"
             >
@@ -103,7 +106,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenResume }) => {
 
         {/* Bottom copyright line */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[10px] font-mono uppercase tracking-widest text-neutral-500 gap-2 text-center sm:text-left">
-          <p>© {new Date().getFullYear()} MODASSIR RAJA. ALL RIGHTS RESERVED.</p>
+          <p>© {new Date().getFullYear()} MODASSIR RAJA. {t.footer.rightsReserved}</p>
           <p className="flex items-center gap-1 justify-center">
             EDITORIAL EDITION // REACT + TYPESCRIPT + TAILWIND
           </p>

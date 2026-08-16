@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Download, Printer, Check, FileText, ExternalLink, Mail, MapPin, Globe, Sparkles } from 'lucide-react';
-import { PERSONAL_INFO, EXPERIENCES, SKILL_CATEGORIES, EDUCATION, CERTIFICATIONS, LANGUAGES } from '../data/resumeData';
+import { X, Download, Printer, Check, FileText } from 'lucide-react';
+import { PERSONAL_INFO } from '../data/resumeData';
+import { useLanguage } from '../context/LanguageContext';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface ResumeModalProps {
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useLanguage();
   const [downloadSuccess, setDownloadSuccess] = useState(false);
 
   const handlePrint = () => {
@@ -16,7 +18,6 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   };
 
   const handleDownloadPDF = () => {
-    // Generate a downloadable text/printable format or trigger browser print-to-pdf
     setDownloadSuccess(true);
     setTimeout(() => {
       window.print();
@@ -56,7 +57,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                 <h3 className="text-sm sm:text-base font-serif font-bold text-black dark:text-white flex items-center gap-2">
                   Curriculum Vitae — Modassir Raja
                   <span className="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 rounded-xs border border-black/20 dark:border-white/20 text-black dark:text-white">
-                    PDF EXPORT READY
+                    PDF READY
                   </span>
                 </h3>
                 <p className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">
@@ -69,17 +70,17 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               <button
                 id="resume-modal-print-btn"
                 onClick={handlePrint}
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider rounded-xs text-black dark:text-white border border-black/15 dark:border-white/15 hover:border-black dark:hover:border-white transition"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider rounded-xs text-black dark:text-white border border-black/15 dark:border-white/15 hover:border-black dark:hover:border-white transition cursor-pointer"
                 title="Print or Save as PDF"
               >
                 <Printer className="w-3 h-3" />
-                Print / Save PDF
+                {t.resumeModal.printBtn}
               </button>
 
               <button
                 id="resume-modal-download-btn"
                 onClick={handleDownloadPDF}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[10px] font-mono uppercase font-bold tracking-wider rounded-xs text-white bg-black dark:bg-white dark:text-black hover:opacity-80 transition"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[10px] font-mono uppercase font-bold tracking-wider rounded-xs text-white bg-black dark:bg-white dark:text-black hover:opacity-80 transition cursor-pointer"
               >
                 {downloadSuccess ? (
                   <>
@@ -89,7 +90,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                 ) : (
                   <>
                     <Download className="w-3 h-3" />
-                    Download PDF
+                    {t.resumeModal.downloadPdf}
                   </>
                 )}
               </button>
@@ -97,7 +98,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               <button
                 id="resume-modal-close-btn"
                 onClick={onClose}
-                className="p-1.5 text-neutral-400 hover:text-black dark:hover:text-white transition"
+                className="p-1.5 text-neutral-400 hover:text-black dark:hover:text-white transition cursor-pointer"
                 aria-label="Close modal"
               >
                 <X className="w-4 h-4" />
@@ -119,7 +120,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                     Modassir Raja
                   </h1>
                   <p className="text-sm font-mono uppercase tracking-widest text-neutral-600 mb-2">
-                    Frontend Developer
+                    {PERSONAL_INFO.title}
                   </p>
                   <div className="text-xs text-neutral-600 font-mono flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1">
                     <span>Hyderabad, India</span>
@@ -284,9 +285,9 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             </span>
             <button
               onClick={onClose}
-              className="text-black dark:text-white font-bold hover:underline"
+              className="text-black dark:text-white font-bold hover:underline cursor-pointer"
             >
-              Close Dossier
+              {t.resumeModal.close}
             </button>
           </div>
         </motion.div>

@@ -7,6 +7,7 @@ export interface Project {
   tags: string[];
   features: string[];
   metrics?: string;
+  readingTime?: string;
   liveUrl?: string;
   githubUrl?: string;
   iconName: string;

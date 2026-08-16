@@ -1,19 +1,19 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import {
-  GraduationCap,
   Award,
   Languages,
   Calendar,
   MapPin,
-  CheckCircle2,
-  ExternalLink,
   BookOpen,
 } from 'lucide-react';
 import { EDUCATION, CERTIFICATIONS, LANGUAGES } from '../data/resumeData';
+import { useLanguage } from '../context/LanguageContext';
 import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const EducationCertifications: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section id="education" className="py-24 border-b border-black/10 dark:border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,13 +26,13 @@ export const EducationCertifications: React.FC = () => {
           {/* Section Header */}
           <motion.div variants={fadeInUp} className="max-w-3xl mb-16">
             <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
-              SECTION // 04 — PEDAGOGY
+              {t.education.sectionNum}
             </div>
             <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-3">
-              Education, Certifications, & Languages
+              {t.education.title}
             </h2>
             <p className="text-base text-neutral-600 dark:text-neutral-400 font-serif italic">
-              Formal technical degrees in Computer Science & Information Technology, industry simulations, and language proficiencies.
+              {t.education.subtitle}
             </p>
           </motion.div>
 
@@ -42,7 +42,7 @@ export const EducationCertifications: React.FC = () => {
               <div className="flex items-center gap-3 pb-3 border-b border-black/10 dark:border-white/10 mb-6">
                 <BookOpen className="w-4 h-4 text-black dark:text-white" />
                 <h3 className="text-xl font-serif text-black dark:text-white">
-                  Formal Education
+                  {t.education.eduTab}
                 </h3>
               </div>
 
@@ -94,7 +94,7 @@ export const EducationCertifications: React.FC = () => {
                 <div className="flex items-center gap-3 pb-3 border-b border-black/10 dark:border-white/10 mb-6">
                   <Award className="w-4 h-4 text-black dark:text-white" />
                   <h3 className="text-xl font-serif text-black dark:text-white">
-                    Certifications
+                    {t.education.certTab}
                   </h3>
                 </div>
 
@@ -136,7 +136,7 @@ export const EducationCertifications: React.FC = () => {
                 <div className="flex items-center gap-3 pb-3 border-b border-black/10 dark:border-white/10 mb-6">
                   <Languages className="w-4 h-4 text-black dark:text-white" />
                   <h3 className="text-xl font-serif text-black dark:text-white">
-                    Language Proficiency
+                    {t.education.langTab}
                   </h3>
                 </div>
 

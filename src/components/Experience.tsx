@@ -1,10 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Briefcase, Building2, Calendar, MapPin, CheckCircle2, ChevronRight, Award, Shield } from 'lucide-react';
+import { Building2, Calendar, MapPin, Shield } from 'lucide-react';
 import { EXPERIENCES } from '../data/resumeData';
+import { useLanguage } from '../context/LanguageContext';
 import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const Experience: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section id="experience" className="py-24 border-b border-black/10 dark:border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,13 +20,13 @@ export const Experience: React.FC = () => {
           {/* Section Header */}
           <motion.div variants={fadeInUp} className="max-w-3xl mb-16">
             <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
-              SECTION // 01 — RECORD
+              {t.experience.sectionNum}
             </div>
             <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-4">
-              Professional Experience & Engineering
+              {t.experience.title}
             </h2>
             <p className="text-base text-neutral-600 dark:text-neutral-400 leading-relaxed font-serif italic">
-              Demonstrated background delivering real-world UI components, following enterprise design systems, and participating in collaborative software engineering workflows.
+              {t.experience.subtitle}
             </p>
           </motion.div>
 
@@ -90,7 +93,7 @@ export const Experience: React.FC = () => {
                   {/* Technologies used */}
                   <div className="mt-6 pt-4 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center gap-2">
                     <span className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest mr-1">
-                      TECH:
+                      {t.experience.coreTech}:
                     </span>
                     {exp.technologies.map((tech) => (
                       <span

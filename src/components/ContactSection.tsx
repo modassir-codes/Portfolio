@@ -10,15 +10,16 @@ import {
   Github,
   Linkedin,
   Clock,
-  Sparkles,
   MessageSquare,
   AlertCircle,
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/resumeData';
 import { ContactFormData } from '../types';
+import { useLanguage } from '../context/LanguageContext';
 import { staggerContainer, fadeInUp, scrollViewport } from '../utils/animations';
 
 export const ContactSection: React.FC = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -29,7 +30,6 @@ export const ContactSection: React.FC = () => {
   const [errors, setErrors] = useState<Partial<ContactFormData>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedMessage, setCopiedMessage] = useState(false);
 
@@ -60,11 +60,10 @@ export const ContactSection: React.FC = () => {
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setSubmissionError(null);
 
     try {
       // Send real email directly to modassirraza722083@gmail.com via FormSubmit AJAX endpoint
-      const response = await fetch(`https://formsubmit.co/ajax/${PERSONAL_INFO.email}`, {
+      await fetch(`https://formsubmit.co/ajax/${PERSONAL_INFO.email}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,15 +80,10 @@ export const ContactSection: React.FC = () => {
         }),
       });
 
-      if (response.ok) {
-        setIsSubmitted(true);
-      } else {
-        // If external API returned non-200, still mark as success for user and provide instant mailto backup
-        setIsSubmitted(true);
-      }
+      setIsSubmitted(true);
     } catch (err) {
       console.error('Submission error:', err);
-      // Even if network blocks formsubmit (e.g. strict CORS/adblock), show success with direct mailto fallback
+      // Even if network blocks formsubmit, show success with direct mailto fallback
       setIsSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -131,13 +125,13 @@ export const ContactSection: React.FC = () => {
           <motion.div variants={fadeInUp} className="lg:col-span-5 flex flex-col justify-between">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neutral-500 mb-3 block">
-                SECTION // 05 — DISPATCH
+                {t.contact.sectionNum}
               </div>
               <h2 className="text-3xl sm:text-4xl font-serif font-normal tracking-tight text-black dark:text-white mb-4">
-                Initiate Dialogue & Inquiries
+                {t.contact.title}
               </h2>
               <p className="text-base text-neutral-600 dark:text-neutral-400 font-serif italic leading-relaxed mb-8">
-                Actively seeking Frontend Developer roles to build accessible, high-performance, and resilient interfaces. Inquiries and technical discussions are welcomed.
+                {t.contact.subtitle}
               </p>
 
               {/* Direct email card */}
@@ -149,12 +143,12 @@ export const ContactSection: React.FC = () => {
                   <button
                     id="copy-email-btn"
                     onClick={handleCopyEmail}
-                    className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-black dark:text-white hover:opacity-70 transition"
+                    className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-black dark:text-white hover:opacity-70 transition cursor-pointer"
                   >
                     {copiedEmail ? (
                       <>
                         <Check className="w-3 h-3 text-emerald-500" />
-                        <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
+                        <span className="text-emerald-600 dark:text-emerald-400">{t.contact.copied}</span>
                       </>
                     ) : (
                       <>
@@ -185,7 +179,7 @@ export const ContactSection: React.FC = () => {
                   <div className="w-7 h-7 rounded-xs border border-black/15 dark:border-white/15 flex items-center justify-center text-black dark:text-white">
                     <Clock className="w-3.5 h-3.5" />
                   </div>
-                  <span>Response Time: Typically within 24 hours</span>
+                  <span>{t.contact.responseTime}</span>
                 </div>
               </div>
             </div>
@@ -229,15 +223,15 @@ export const ContactSection: React.FC = () => {
                       <CheckCircle2 className="w-6 h-6 text-emerald-500" />
                     </div>
                     <h3 className="text-2xl font-serif text-black dark:text-white">
-                      Message Dispatched to Modassir
+                      {t.contact.dispatchedTitle}
                     </h3>
                     <p className="text-sm font-serif italic text-neutral-600 dark:text-neutral-400 max-w-md">
-                      Thank you for reaching out, <span className="font-sans font-bold text-black dark:text-white">{formData.name}</span>! Your message has been routed to <span className="font-mono text-xs text-black dark:text-white font-bold">{PERSONAL_INFO.email}</span>.
+                      {t.contact.dispatchedDesc}
                     </p>
 
                     <div className="w-full max-w-md p-4 my-2 text-left rounded-xs bg-black/[0.03] dark:bg-white/[0.03] border border-black/10 dark:border-white/10 font-mono text-xs space-y-1.5">
                       <div className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold border-b border-black/10 dark:border-white/10 pb-1 flex items-center justify-between">
-                        <span>DISPATCH RECEIPT</span>
+                        <span>{t.contact.receiptTitle}</span>
                         <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                           <Check className="w-3 h-3" /> SENT
                         </span>
@@ -253,35 +247,35 @@ export const ContactSection: React.FC = () => {
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
                       <button
                         onClick={handleCopyMessagePayload}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-[10px] font-mono uppercase tracking-wider text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-[10px] font-mono uppercase tracking-wider text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition cursor-pointer"
                       >
                         {copiedMessage ? (
                           <>
                             <Check className="w-3 h-3 text-emerald-500" />
-                            <span className="text-emerald-500">Copied Payload</span>
+                            <span className="text-emerald-500">{t.contact.copied}</span>
                           </>
                         ) : (
                           <>
                             <Copy className="w-3 h-3" />
-                            <span>Copy Message</span>
+                            <span>{t.contact.copyMessage}</span>
                           </>
                         )}
                       </button>
                       <button
                         onClick={handleOpenMailClient}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-[10px] font-mono uppercase tracking-wider text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-xs text-[10px] font-mono uppercase tracking-wider text-black dark:text-white border border-black/20 dark:border-white/20 hover:border-black dark:hover:border-white transition cursor-pointer"
                       >
                         <Mail className="w-3 h-3" />
-                        Open Email App
+                        {t.contact.openEmailApp}
                       </button>
                       <button
                         onClick={() => {
                           setIsSubmitted(false);
                           setFormData({ name: '', email: '', subject: '', message: '' });
                         }}
-                        className="px-4 py-2 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold text-white bg-black dark:bg-white dark:text-black hover:opacity-80 transition"
+                        className="px-4 py-2 rounded-xs text-[10px] font-mono uppercase tracking-wider font-bold text-white bg-black dark:bg-white dark:text-black hover:opacity-80 transition cursor-pointer"
                       >
-                        Send Another
+                        {t.contact.sendAnother}
                       </button>
                     </div>
                   </motion.div>
@@ -312,7 +306,7 @@ export const ContactSection: React.FC = () => {
                           htmlFor="contact-name"
                           className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-1.5"
                         >
-                          Sender Name
+                          {t.contact.nameLabel}
                         </label>
                         <input
                           type="text"
@@ -322,7 +316,7 @@ export const ContactSection: React.FC = () => {
                             setFormData({ ...formData, name: e.target.value });
                             if (errors.name) setErrors({ ...errors, name: undefined });
                           }}
-                          placeholder="e.g. Sarah Jenkins"
+                          placeholder={t.contact.namePlaceholder}
                           className={`w-full px-3.5 py-2.5 rounded-xs text-xs font-mono bg-white dark:bg-[#111111] border transition focus:outline-none ${
                             errors.name
                               ? 'border-rose-500'
@@ -342,7 +336,7 @@ export const ContactSection: React.FC = () => {
                           htmlFor="contact-email"
                           className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-1.5"
                         >
-                          Email Address
+                          {t.contact.emailLabel}
                         </label>
                         <input
                           type="email"
@@ -352,7 +346,7 @@ export const ContactSection: React.FC = () => {
                             setFormData({ ...formData, email: e.target.value });
                             if (errors.email) setErrors({ ...errors, email: undefined });
                           }}
-                          placeholder="sarah@company.com"
+                          placeholder={t.contact.emailPlaceholder}
                           className={`w-full px-3.5 py-2.5 rounded-xs text-xs font-mono bg-white dark:bg-[#111111] border transition focus:outline-none ${
                             errors.email
                               ? 'border-rose-500'
@@ -374,7 +368,7 @@ export const ContactSection: React.FC = () => {
                         htmlFor="contact-subject"
                         className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-1.5"
                       >
-                        Inquiry Subject
+                        {t.contact.subjectLabel}
                       </label>
                       <input
                         type="text"
@@ -384,7 +378,7 @@ export const ContactSection: React.FC = () => {
                           setFormData({ ...formData, subject: e.target.value });
                           if (errors.subject) setErrors({ ...errors, subject: undefined });
                         }}
-                        placeholder="Frontend Engineering Opportunity"
+                        placeholder={t.contact.subjectPlaceholder}
                         className={`w-full px-3.5 py-2.5 rounded-xs text-xs font-mono bg-white dark:bg-[#111111] border transition focus:outline-none ${
                           errors.subject
                             ? 'border-rose-500'
@@ -405,7 +399,7 @@ export const ContactSection: React.FC = () => {
                         htmlFor="contact-message"
                         className="block text-[10px] font-mono uppercase tracking-widest text-neutral-500 mb-1.5"
                       >
-                        Body Content
+                        {t.contact.messageLabel}
                       </label>
                       <textarea
                         id="contact-message"
@@ -415,7 +409,7 @@ export const ContactSection: React.FC = () => {
                           setFormData({ ...formData, message: e.target.value });
                           if (errors.message) setErrors({ ...errors, message: undefined });
                         }}
-                        placeholder="Detail your requirements, project scope, or opportunity..."
+                        placeholder={t.contact.messagePlaceholder}
                         className={`w-full px-3.5 py-2.5 rounded-xs text-xs font-mono bg-white dark:bg-[#111111] border transition focus:outline-none resize-none ${
                           errors.message
                             ? 'border-rose-500'
@@ -440,17 +434,17 @@ export const ContactSection: React.FC = () => {
                         type="submit"
                         id="submit-contact-form-btn"
                         disabled={isSubmitting}
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xs font-mono uppercase text-[11px] font-bold tracking-widest text-white bg-black dark:bg-white dark:text-black hover:opacity-85 transition-all disabled:opacity-50"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xs font-mono uppercase text-[11px] font-bold tracking-widest text-white bg-black dark:bg-white dark:text-black hover:opacity-85 transition-all disabled:opacity-50 cursor-pointer"
                       >
                         {isSubmitting ? (
                           <>
                             <div className="w-3.5 h-3.5 border-2 border-neutral-400 border-t-white dark:border-t-black rounded-full animate-spin" />
-                            <span>Transmitting...</span>
+                            <span>{t.contact.sendingBtn}</span>
                           </>
                         ) : (
                           <>
                             <Send className="w-3.5 h-3.5" />
-                            <span>Send Dispatch</span>
+                            <span>{t.contact.sendBtn}</span>
                           </>
                         )}
                       </button>
